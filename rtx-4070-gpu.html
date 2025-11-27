@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RTX 4070 GPU - Product Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { background-color: #1A0B2C; font-family: 'Inter', sans-serif; }
+        :root { --neon-pink: #FF3864; }
+        .text-neon-pink { color: var(--neon-pink); }
+        .bg-neon-pink { background-color: var(--neon-pink); }
+        .hover\:bg-neon-pink-dark:hover { background-color: #f01e4a; }
+    </style>
+    <script>
+        function addToLocalCart(name, price, imageUrl) {
+            let cart = JSON.parse(localStorage.getItem("Honoured Cart")) || [];
+            let existing = cart.find(item => item.name === name);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ name: name, price: price, imageUrl: imageUrl, quantity: 1 });
+            }
+            localStorage.setItem("Honoured Cart", JSON.stringify(cart));
+            alert("✔ Added to Cart!");
+        }
+    </script>
+</head>
+<body class="text-white">
+    <header class="p-4 bg-gray-900/50 sticky top-0 z-10 border-b border-pink-400/30">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="shop.html" class="text-3xl font-extrabold text-white hover:text-pink-400 transition">Honoured One</a>
+            <a href="cart.html" class="relative">
+                <i class="fas fa-shopping-cart text-2xl"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-10 mt-10">
+        <div>
+            <img src="rtx.jpg" alt="RTX 4070 GPU" class="rounded-xl shadow-xl w-full" />
+        </div>
+
+        <div>
+            <p class="text-pink-400 uppercase text-sm font-bold">Category: Electronics (PC Component)</p>
+            <h1 class="text-5xl font-extrabold mt-2 text-white">Gigabyte Aorus RTX 4070 Master 12G</h1>
+
+            <p class="text-gray-300 mt-4 leading-relaxed">
+                Dominate the latest games with the NVIDIA GeForce RTX 4070. This card delivers ultra-performance, 
+                high-fidelity visuals with Ray Tracing, and revolutionary AI-powered DLSS 3. The Gigabyte Aorus 
+                Master edition features superior cooling and a sleek RGB design for peak performance and aesthetics.
+            </p>
+
+            <ul class="mt-6 space-y-2 text-gray-300">
+                <li class="font-bold">💻 **GPU:** NVIDIA GeForce RTX 4070</li>
+                <li class="font-bold">🧠 **Memory:** 12GB GDDR6X VRAM</li>
+                <li class="font-bold">⚡ **Technology:** DLSS 3, Ray Tracing Cores</li>
+                <li class="font-bold">❄️ **Cooling:** Aorus Windforce Cooling System</li>
+                <li class="font-bold">🖥️ **Output:** HDMI 2.1a, DisplayPort 1.4a</li>
+            </ul>
+
+            <p class="text-4xl font-extrabold text-neon-pink mt-6">₹42,000</p>
+
+            <div class="mt-6 flex space-x-4 items-center">
+                <button
+                    class="px-6 py-3 bg-neon-pink rounded-lg text-white text-lg font-extrabold hover:bg-neon-pink-dark transition shadow-lg"
+                    onclick="addToLocalCart('RTX 4070 GPU', 42000, 'rtx.jpg')">
+                    Add to Cart
+                </button>
+                <a href="cart.html"
+                   class="px-6 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition shadow-lg">
+                    Go to Cart
+                </a>
+                <a href="shop.html"
+                   class="px-6 py-3 bg-gray-800 border border-pink-400 text-pink-300 font-bold rounded-lg hover:bg-gray-700 transition">
+                   ← Return to Shopping
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lenovo LOQ - Product Details</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #1A0B2C;
+            font-family: 'Inter', sans-serif;
+        }
+        :root {
+            --neon-pink: #FF3864;
+        }
+    </style>
+
+    <script>
+        // -------- CART SYSTEM (Simplified for non-variant tech product) --------
+        function addToLocalCart(name, price, imageUrl) {
+            let cart = JSON.parse(localStorage.getItem("Honoured Cart")) || [];
+
+            let existing = cart.find(item => item.name === name);
+
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({
+                    name: name,
+                    price: price,
+                    imageUrl: imageUrl,
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem("Honoured Cart", JSON.stringify(cart));
+            
+            // Simple visual feedback on the button itself
+            const buttonElement = document.getElementById('add-to-cart-btn');
+            buttonElement.textContent = 'Added! ✔';
+            buttonElement.disabled = true;
+
+            setTimeout(() => {
+                buttonElement.textContent = 'Add to Cart';
+                buttonElement.disabled = false;
+            }, 800);
+        }
+    </script>
+</head>
+
+<body class="text-white">
+
+    <header class="p-4 bg-gray-900/50 sticky top-0 border-b border-pink-400/30">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="shop.html" class="text-3xl font-extrabold text-white hover:text-pink-400 transition">Honoured One</a>
+
+            <a href="cart.html" class="relative text-white hover:text-pink-400 transition">
+                <i class="fas fa-shopping-cart text-2xl"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-10 mt-10">
+
+        <div>
+            <img src="https://placehold.co/600x400/302844/ffffff?text=Lenovo+LOQ+Gaming+Laptop" class="rounded-xl shadow-xl w-full" alt="Lenovo LOQ Gaming Laptop" />
+        </div>
+
+        <div>
+            <p class="text-pink-400 uppercase text-sm font-bold">Category: Gaming Laptop</p>
+
+            <h1 class="text-5xl font-extrabold mt-2">Lenovo LOQ (RTX 4050)</h1>
+
+            <p class="text-gray-300 mt-4 leading-relaxed">
+                Dominate the competition with the Lenovo LOQ. Equipped with the latest 13th Gen Intel Core processor and NVIDIA's potent RTX 4050, it delivers high-performance gaming and smooth multitasking in a stylish, portable chassis.
+            </p>
+
+            <ul class="mt-6 space-y-2 text-gray-300">
+                <li>🔥 **CPU** – Intel Core i5 13th Gen 13450HX</li>
+                <li>🎮 **GPU** – NVIDIA GeForce RTX 4050 (6GB Dedicated)</li>
+                <li>💾 **Memory** – 16 GB RAM / 512 GB SSD</li>
+                <li>🖥️ **OS** – Windows 11 Home</li>
+                <li>⚡ **Display** – High Refresh Rate Gaming Screen</li>
+            </ul>
+
+            <p class="text-4xl font-extrabold text-pink-400 mt-6">₹74,999</p>
+
+            <button
+                id="add-to-cart-btn"
+                class="mt-6 px-6 py-3 bg-pink-500 rounded-lg text-white text-lg font-extrabold hover:bg-pink-600 transition"
+                onclick="addToLocalCart('LENVO LOQ', 74999, 'l1.jpg')">
+                Add to Cart
+            </button>
+
+            <a href="cart.html"
+               class="mt-4 inline-block px-6 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition">
+                Go to Cart
+            </a>
+
+            <a href="shop.html"
+               class="mt-4 ml-2 inline-block px-6 py-3 bg-gray-800 border border-pink-400 text-pink-300 font-bold rounded-lg hover:bg-gray-700 transition">
+                ← Return to Shopping
+            </a>
+        </div>
+    </main>
+
+    <section class="max-w-5xl mx-auto mt-16 mb-20 p-6 bg-gray-900/40 rounded-xl shadow-xl">
+        <h2 class="text-3xl font-extrabold text-pink-400 mb-4">Detailed Specifications</h2>
+
+        <div class="space-y-3 text-gray-300 grid sm:grid-cols-2 gap-4">
+            <p><strong>Model:</strong> 15IRX9</p>
+            <p><strong>Processor Cores:</strong> Deca-core (10)</p>
+            <p><strong>Storage Type:</strong> NVMe SSD</p>
+            <p><strong>Connectivity:</strong> Wi-Fi 6, Bluetooth 5.1</p>
+        </div>
+    </section>
+</body>
+</html>

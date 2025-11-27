@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BOat m4 (Rockerz 480) - Product Details</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #1A0B2C;
+            font-family: 'Inter', sans-serif;
+        }
+        :root {
+            --neon-pink: #FF3864;
+        }
+    </style>
+
+    <script>
+        // -------- CART SYSTEM --------
+        function addToLocalCart(name, price, imageUrl) {
+            let cart = JSON.parse(localStorage.getItem("Honoured Cart")) || [];
+
+            let existing = cart.find(item => item.name === name);
+
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({
+                    name: name,
+                    price: price,
+                    imageUrl: imageUrl,
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem("Honoured Cart", JSON.stringify(cart));
+            
+            // Simple visual feedback on the button itself
+            const buttonElement = document.getElementById('add-to-cart-btn');
+            buttonElement.textContent = 'Added! ✔';
+            buttonElement.disabled = true;
+
+            setTimeout(() => {
+                buttonElement.textContent = 'Add to Cart';
+                buttonElement.disabled = false;
+            }, 800);
+        }
+    </script>
+</head>
+
+<body class="text-white">
+
+    <header class="p-4 bg-gray-900/50 sticky top-0 border-b border-pink-400/30">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="shop.html" class="text-3xl font-extrabold text-white hover:text-pink-400 transition">Honoured One</a>
+
+            <a href="cart.html" class="relative text-white hover:text-pink-400 transition">
+                <i class="fas fa-shopping-cart text-2xl"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-10 mt-10">
+
+        <div>
+            <img src="https://placehold.co/600x600/302844/ffffff?text=BOat+Rockerz+480" class="rounded-xl shadow-xl w-full" alt="BOat Rockerz 480 Headphones" />
+        </div>
+
+        <div>
+            <p class="text-pink-400 uppercase text-sm font-bold">Category: Gaming & Music</p>
+
+            <h1 class="text-5xl font-extrabold mt-2">BOat m4 (Rockerz 480)</h1>
+            <h2 class="text-xl font-semibold text-gray-400 mt-1">White Sabre, On the Ear</h2>
+
+            <p class="text-gray-300 mt-4 leading-relaxed">
+                The boAt Rockerz 480 is designed for the ultimate immersive experience. With **Beast Mode** for low-latency gaming, vibrant **RGB LEDs** with 6 light modes, and a massive 60-hour playback time, your audio never stops.
+            </p>
+
+            <ul class="mt-6 space-y-2 text-gray-300">
+                <li>🔋 **Massive 60 HRS Playback** – Power through days of listening.</li>
+                <li>🕹️ **Beast Mode** – Ultra low latency for gaming sessions.</li>
+                <li>💡 **RGB LEDs** – 6 dynamic light modes for a custom look.</li>
+                <li>🎙️ **ENx Tech** – Clear voice calls.</li>
+                <li>🎧 **Comfort Fit** – Ergonomic on-ear design.</li>
+            </ul>
+
+            <p class="text-4xl font-extrabold text-pink-400 mt-6">₹2,999</p>
+
+            <button
+                id="add-to-cart-btn"
+                class="mt-6 px-6 py-3 bg-pink-500 rounded-lg text-white text-lg font-extrabold hover:bg-pink-600 transition"
+                onclick="addToLocalCart('BOat m4', 2999, 'download (8).jpg')">
+                Add to Cart
+            </button>
+
+            <a href="cart.html"
+               class="mt-4 inline-block px-6 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition">
+                Go to Cart
+            </a>
+
+            <a href="shop.html"
+               class="mt-4 ml-2 inline-block px-6 py-3 bg-gray-800 border border-pink-400 text-pink-300 font-bold rounded-lg hover:bg-gray-700 transition">
+                ← Return to Shopping
+            </a>
+        </div>
+    </main>
+
+    <section class="max-w-5xl mx-auto mt-16 mb-20 p-6 bg-gray-900/40 rounded-xl shadow-xl">
+        <h2 class="text-3xl font-extrabold text-pink-400 mb-4">Detailed Features</h2>
+
+        <div class="space-y-3 text-gray-300">
+            <p><strong>Driver Size:</strong> 40mm Dynamic Drivers</p>
+            <p><strong>Charging:</strong> Type-C Port</p>
+            <p><strong>Control:</strong> Integrated buttons for volume and track control</p>
+        </div>
+    </section>
+
+</body>
+</html>

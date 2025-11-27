@@ -1,0 +1,207 @@
+/* General Theming */
+:root {
+    --primary-bg: #1A0D28; /* Dark Purple Background */
+    --secondary-bg: #301E49; /* Slightly Lighter Purple for Cards */
+    --accent-color: #FF1A75; /* Neon Pink/Red for buttons and accents */
+    --text-light: #F0F0F0; /* Light Text */
+    --text-secondary: #9974B0; /* Muted Text */
+    --border-color: #4A3369; /* Card/Divider Borders */
+}
+
+/* Global Reset and Body Styling */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--primary-bg);
+    color: var(--text-light);
+    min-height: 100vh;
+}
+
+/* Header (Top Navigation) */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: var(--secondary-bg);
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    letter-spacing: 2px;
+}
+
+.search-bar input {
+    padding: 8px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--primary-bg);
+    color: var(--text-light);
+    width: 300px;
+}
+
+/* Layout Container */
+.container {
+    display: flex;
+    padding: 0; /* Adjust padding if sidebar is fully implemented */
+}
+
+/* Placeholder for the left sidebar (to maintain page structure seen in the image) */
+.sidebar-placeholder {
+    width: 250px; /* Width matching the 'Refine Your Search' sidebar */
+    background-color: var(--secondary-bg);
+    min-height: calc(100vh - 59px); /* Adjust height based on header */
+}
+
+/* Main Content Area */
+.main-content {
+    flex-grow: 1;
+    padding: 30px;
+}
+
+.cart-title {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: var(--accent-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* Cart Specific Layout */
+.cart-layout {
+    display: flex;
+    gap: 30px;
+}
+
+.cart-items {
+    flex: 3; /* Cart items take up more space */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Individual Cart Item Card */
+.cart-item-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--secondary-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-name {
+    font-size: 1.5rem;
+    color: var(--text-light);
+    margin-bottom: 5px;
+}
+
+.item-description {
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+}
+
+.item-price-quantity {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.item-price {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.quantity-input {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--primary-bg);
+    color: var(--text-light);
+    text-align: center;
+}
+
+/* Remove Button */
+.remove-button {
+    background-color: transparent;
+    color: var(--text-secondary);
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.remove-button:hover {
+    color: var(--accent-color);
+}
+
+
+/* Order Summary Card */
+.order-summary-card {
+    flex: 1; /* Summary takes up less space */
+    background-color: var(--secondary-bg);
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    min-width: 300px;
+    height: fit-content; /* Only take up space needed */
+    border-left: 2px solid var(--accent-color); /* Highlight summary card */
+}
+
+.order-summary-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: var(--text-light);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.summary-line.total {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border-color);
+    font-size: 1.4rem;
+    color: var(--accent-color);
+}
+
+/* Checkout Button (Same style as 'Shop Now' in the original image) */
+.checkout-button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+
+.checkout-button:hover {
+    background-color: #FF4D94; /* Slightly lighter neon pink on hover */
+}

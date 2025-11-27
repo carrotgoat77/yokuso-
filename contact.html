@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | CyberShop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-dark': '#111827', // A deep charcoal color
+                        'neon-pink': '#EC4899',   // A vibrant neon pink
+                        'neon-glow': '#F472B6',   // Lighter pink for glow/accents
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    keyframes: {
+                        pulseNeon: {
+                            '0%, 100%': { 'box-shadow': '0 0 5px #EC4899, 0 0 10px #EC4899' },
+                            '50%': { 'box-shadow': '0 0 10px #F472B6, 0 0 20px #F472B6' },
+                        }
+                    },
+                    animation: {
+                        'neon-pulse': 'pulseNeon 3s infinite ease-in-out',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827;
+            color: #E5E7EB;
+            /* Using a placeholder background image for visual appeal */
+            background-image: url('https://in.pinterest.com/pin/323485185757231779/'); 
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Semi-transparent overlay for readability */
+        .main-container {
+            background-color: rgba(17, 24, 39, 0.95); 
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .neon-input {
+            background-color: #1F2937;
+            border: 1px solid rgba(236, 72, 153, 0.5);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .neon-input:focus {
+            border-color: #F472B6;
+            outline: none;
+            box-shadow: 0 0 8px rgba(244, 114, 182, 0.6);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <header class="bg-gray-900/90 shadow-xl sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
+                
+                <div class="flex items-center space-x-8">
+                    <h1 class="text-3xl font-extrabold text-neon-pink tracking-wider">CyberShop</h1>
+                    <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                        <a href="index.html" class="text-gray-300 hover:text-neon-glow transition duration-150">Home</a>
+                        <a href="shop.html" class="text-gray-300 hover:text-neon-glow transition duration-150">Products</a>
+                        <a href="contact.html" class="text-neon-pink border-b-2 border-neon-pink pb-1">Contact</a>
+                    </nav>
+                </div>
+
+                <div class="w-full lg:w-96 flex items-center space-x-4">
+                    <div class="relative w-full">
+                        <input type="search" placeholder="Search high-tech gadgets..."
+                            class="w-full py-2 pl-10 pr-4 rounded-full bg-gray-800 text-white placeholder-gray-500 focus:ring-2 focus:ring-neon-pink focus:outline-none transition duration-150 border border-gray-700">
+                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neon-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <button class="p-2 rounded-full bg-neon-pink hover:bg-neon-glow transition duration-150 text-gray-900 relative">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                    </button>
+                </div>
+            </div>
+            
+            <nav class="mt-4 md:hidden flex justify-around text-sm font-medium border-t border-gray-700 pt-3">
+                <a href="index.html" class="text-gray-300 hover:text-neon-glow transition duration-150">Home</a>
+                <a href="shop.html" class="text-gray-300 hover:text-neon-glow transition duration-150">Products</a>
+                <a href="contact.html" class="text-neon-pink border-b-2 border-neon-pink pb-1">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="main-container p-6 md:p-10 rounded-2xl shadow-2xl">
+            <header class="text-center mb-10">
+                <h2 class="text-5xl font-extrabold text-neon-pink mb-3 tracking-wide">
+                    Connect to us
+                </h2>
+                <p class="text-xl text-gray-400">
+                    Need tech support, partnership inquiries, or just want to chat about the future? Send a direct data packet.
+                </p>
+            </header> 
+
+            <form action="https://api.web3forms.com/submit" method="POST" class="space-y-6">
+                
+                <input type="hidden" name="access_key" value="32eebedb-afc8-43dc-afcb-9e061cb8ec1d">
+
+                <div>
+                    <label for="name" class="block text-sm font-medium text-neon-glow mb-1">Full Cyber-Name</label>
+                    <input type="text" name="name" id="name" required
+                        class="neon-input w-full px-4 py-3 rounded-lg placeholder-gray-500">
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-neon-glow mb-1">Data Stream Address (Email)</label>
+                    <input type="email" name="email" id="email" required
+                        class="neon-input w-full px-4 py-3 rounded-lg placeholder-gray-500">
+                </div>
+
+                <div>
+                    <label for="subject" class="block text-sm font-medium text-neon-glow mb-1">Data Packet Subject</label>
+                    <input type="text" name="subject" id="subject"
+                        class="neon-input w-full px-4 py-3 rounded-lg placeholder-gray-500">
+                </div>
+
+                <div>
+                    <label for="message" class="block text-sm font-medium text-neon-glow mb-1">Message Protocol</label>
+                    <textarea name="message" id="message" rows="5" required
+                        class="neon-input w-full px-4 py-3 rounded-lg placeholder-gray-500"></textarea>
+                </div>
+
+                <button type="submit"
+                    class="w-full px-6 py-3 mt-6 bg-neon-pink text-gray-900 font-bold text-lg rounded-lg hover:bg-neon-glow transition duration-300 shadow-lg hover:shadow-neon-glow/50 border border-transparent hover:border-white">
+                    Send Data Packet
+                </button>
+
+                <p class="text-xs text-center text-gray-500 pt-4">This form is powered by Web3Forms and the CyberShop network.</p>
+            </form>
+            
+            <div class="mt-10 border-t border-gray-700 pt-8 text-center space-y-4">
+                <p class="text-lg font-semibold text-white">Central Operations Node:</p>
+                <p class="text-gray-400">
+                    <span class="text-neon-pink">Address:</span> A6 RADHEY SHYAM PARK,DELHI-110051<br>
+                    <span class="text-neon-pink">Phone:</span> +919667628807
+                </p>
+                <div class="flex justify-center space-x-6 pt-4">
+                    <a href="https://www.instagram.com/frixz_77" target="_blank" class="text-neon-pink hover:text-neon-glow transition duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07c3.275.148 4.673 1.637 4.82 4.85.058 1.265.07 1.645.07 4.85s-.012 3.584-.07 4.85c-.148 3.276-1.637 4.673-4.85 4.82-1.265.058-1.645.07-4.85.07s-3.584-.012-4.85-.07c-3.276-.148-4.673-1.637-4.82-4.85-.058-1.265-.07-1.645-.07-4.85s.012-3.584.07-4.85c.148-3.275 1.637-4.673 4.85-4.82 1.265-.058 1.645-.07 4.85-.07zm0-2.163c-3.259 0-3.66.014-4.945.071C3.39 0.291 1.766 1.916 1.547 4.697c-.058 1.285-.07 1.686-.07 4.945s.012 3.66.07 4.945c.219 2.781 1.844 4.406 4.598 4.625 1.285.058 1.686.07 4.945.07s3.66-.014 4.945-.071c2.754-.219 4.378-1.844 4.598-4.625.058-1.285.07-1.686.07-4.945s-.014-3.66-.071-4.945c-.219-2.781-1.844-4.406-4.625-4.598-1.285-.058-1.686-.07-4.945-.07zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm6.5-.5a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5z"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/frixz23" target="_blank" class="text-neon-pink hover:text-neon-glow transition duration-300">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07c3.275.148 4.673 1.637 4.82 4.85.058 1.265.07 1.645.07 4.85s-.012 3.584-.07 4.85c-.148 3.276-1.637 4.673-4.85 4.82-1.265.058-1.645.07-4.85.07s-3.584-.012-4.85-.07c-3.276-.148-4.673-1.637-4.82-4.85-.058-1.265-.07-1.645-.07-4.85s.012-3.584.07-4.85c.148-3.275 1.637-4.673 4.85-4.82 1.265-.058 1.645-.07 4.85-.07zm0-2.163c-3.259 0-3.66.014-4.945.071C3.39 0.291 1.766 1.916 1.547 4.697c-.058 1.285-.07 1.686-.07 4.945s.012 3.66.07 4.945c.219 2.781 1.844 4.406 4.598 4.625 1.285.058 1.686.07 4.945.07s3.66-.014 4.945-.071c2.754-.219 4.378-1.844 4.598-4.625.058-1.285.07-1.686.07-4.945s-.014-3.66-.071-4.945c-.219-2.781-1.844-4.406-4.625-4.598-1.285-.058-1.686-.07-4.945-.07zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm6.5-.5a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5z"/></svg>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="bg-gray-900/90 mt-12 py-6 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
+            &copy; 2024 CyberShop. All rights reserved. | <span class="text-neon-pink">Connect and Compute</span>
+        </div>
+    </footer>
+
+</body>
+</html>

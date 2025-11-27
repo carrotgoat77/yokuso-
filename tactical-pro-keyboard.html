@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tactical Pro Keyboard - Product Page</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #1A0B2C;
+            font-family: 'Inter', sans-serif;
+        }
+        :root {
+            --neon-pink: #FF3864;
+        }
+        .text-neon-pink { color: var(--neon-pink); }
+        .bg-neon-pink { background-color: var(--neon-pink); }
+        .hover\:bg-neon-pink-dark:hover { background-color: #f01e4a; }
+    </style>
+
+    <script>
+        function addToLocalCart(name, price, imageUrl) {
+            let cart = JSON.parse(localStorage.getItem("Honoured Cart")) || [];
+            let existing = cart.find(item => item.name === name);
+            
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ name: name, price: price, imageUrl: imageUrl, quantity: 1 });
+            }
+
+            localStorage.setItem("Honoured Cart", JSON.stringify(cart));
+            alert("✔ Added to Cart!");
+        }
+    </script>
+
+</head>
+
+<body class="text-white">
+
+    <header class="p-4 bg-gray-900/50 sticky top-0 border-b border-pink-400/30">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="shop.html" class="text-3xl font-extrabold text-white hover:text-pink-400 transition">Honoured One</a>
+            <a href="cart.html" class="relative">
+                <i class="fas fa-shopping-cart text-2xl"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-10 mt-10">
+
+        <div>
+            <img src="shopping.webp" alt="Tactical Pro Keyboard" class="rounded-xl shadow-xl w-full" />
+        </div>
+
+        <div>
+            <p class="text-pink-400 uppercase text-sm font-bold">Category: Gaming Gear</p>
+            <h1 class="text-5xl font-extrabold mt-2 text-white">Tactical Pro Keyboard</h1>
+
+            <p class="text-gray-300 mt-4 leading-relaxed">
+                The Tactical Pro is a premium mechanical gaming keyboard engineered for peak performance. 
+                Featuring ultra-responsive switches, vibrant RGB backlighting, and a durable metal body, 
+                it's the perfect tool for competitive gamers and professional typists alike.
+            </p>
+
+            <ul class="mt-6 space-y-2 text-gray-300">
+                <li class="font-bold">⌨️ **Mechanical Switches** – Fast, tactile response</li>
+                <li class="font-bold">🌈 **Custom RGB** – Per-key lighting customization</li>
+                <li class="font-bold">🛡️ **Aircraft-Grade Aluminum** – Ultimate durability</li>
+                <li class="font-bold">🎮 **N-Key Rollover** – Every keystroke registers</li>
+                <li class="font-bold">🖱️ **Includes Gaming Mouse** – Ergonomic 6400 DPI mouse</li>
+            </ul>
+
+            <p class="text-4xl font-extrabold text-neon-pink mt-6">₹4,999</p>
+
+            <div class="mt-6 flex space-x-4 items-center">
+                <button
+                    class="px-6 py-3 bg-neon-pink rounded-lg text-white text-lg font-extrabold hover:bg-neon-pink-dark transition shadow-lg"
+                    onclick="addToLocalCart('Tactical Pro Keyboard', 4999, 'shopping.webp')">
+                    Add to Cart
+                </button>
+                <a href="cart.html"
+                   class="px-6 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition shadow-lg">
+                    Go to Cart
+                </a>
+                <a href="shop.html"
+                   class="px-6 py-3 bg-gray-800 border border-pink-400 text-pink-300 font-bold rounded-lg hover:bg-gray-700 transition">
+                   ← Return to Shopping
+                </a>
+            </div>
+        </div>
+    </main>
+    
+    <section class="max-w-5xl mx-auto mt-16 mb-20 p-6 bg-gray-900/40 rounded-xl shadow-xl">
+        <h2 class="text-3xl font-extrabold text-neon-pink mb-4">Customer Reviews</h2>
+
+        <div class="space-y-6">
+            <div class="bg-gray-800/50 p-4 rounded-lg">
+                <p class="font-bold text-white">⭐ 5 / 5 — Must-Buy for Gamers</p>
+                <p class="text-gray-300 mt-1">
+                    The keys feel fantastic and the mouse is a great addition. RGB software is easy to use.
+                </p>
+                <p class="text-gray-500 text-sm mt-1">— Akash, Chennai</p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

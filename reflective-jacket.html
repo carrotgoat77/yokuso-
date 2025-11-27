@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reflective Fitness Jacket - Product Details</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #1A0B2C;
+            font-family: 'Inter', sans-serif;
+        }
+        :root {
+            --neon-pink: #FF3864;
+        }
+        /* Style for the selected size button */
+        .size-btn.selected {
+             background-color: var(--neon-pink);
+             border-color: var(--neon-pink);
+             color: white;
+        }
+    </style>
+
+    <script>
+        // -------- CART SYSTEM --------
+        function addToLocalCart(baseName, price, imageUrl, size) {
+            let cart = JSON.parse(localStorage.getItem("Honoured Cart")) || [];
+            
+            // Create a unique name including the size
+            const productName = `${baseName} (Size: ${size})`;
+
+            let existing = cart.find(item => item.name === productName);
+
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({
+                    name: productName,
+                    price: price,
+                    imageUrl: imageUrl,
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem("Honoured Cart", JSON.stringify(cart));
+            
+            // Simple visual feedback on the button itself
+            const buttonElement = document.getElementById('add-to-cart-btn');
+            buttonElement.textContent = 'Added! ✔';
+            buttonElement.disabled = true;
+
+            setTimeout(() => {
+                buttonElement.textContent = 'Add to Cart';
+                buttonElement.disabled = false;
+            }, 800);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup size selector logic
+            const sizeButtons = document.querySelectorAll('.size-btn');
+            const addToCartBtn = document.getElementById('add-to-cart-btn');
+
+            sizeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove 'selected' class from all buttons
+                    sizeButtons.forEach(btn => btn.classList.remove('selected'));
+                    // Add 'selected' class to the clicked button
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Ensure 'M' is selected by default and add the click handler to the main button
+            document.querySelector('.size-btn[data-size="M"]').classList.add('selected');
+
+            addToCartBtn.addEventListener('click', function() {
+                const selectedSize = document.querySelector('.size-btn.selected')?.getAttribute('data-size');
+                
+                if (selectedSize) {
+                    // Data matching the item from shop.html
+                    const productData = {
+                        name: 'Reflective Fitness jacket',
+                        price: 999,
+                        image: 'c2.jpg' // Use the image path from your shop.html
+                    };
+                    
+                    addToLocalCart(productData.name, productData.price, productData.image, selectedSize);
+                } else {
+                    alert('Please select a size first!');
+                }
+            });
+        });
+    </script>
+</head>
+
+<body class="text-white">
+
+    <header class="p-4 bg-gray-900/50 sticky top-0 border-b border-pink-400/30">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="shop.html" class="text-3xl font-extrabold text-white hover:text-pink-400 transition">Honoured One</a>
+
+            <a href="cart.html" class="relative text-white hover:text-pink-400 transition">
+                <i class="fas fa-shopping-cart text-2xl"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-10 mt-10">
+
+        <div>
+            <img src="https://placehold.co/600x600/302844/ffffff?text=Reflective+Jacket+Image" class="rounded-xl shadow-xl w-full" alt="Reflective Fitness Jacket"/>
+        </div>
+
+        <div>
+            <p class="text-pink-400 uppercase text-sm font-bold">Category: Fitness Apparel</p>
+
+            <h1 class="text-5xl font-extrabold mt-2">Reflective Fitness Jacket</h1>
+            <h2 class="text-xl font-semibold text-gray-400 mt-1">High-visibility workout wear</h2>
+
+            <p class="text-gray-300 mt-4 leading-relaxed">
+                Stay safe and visible during your early morning or late evening runs. This jacket is made with high-visibility, four-way stretch fabric for maximum comfort and flexibility during any intense workout.
+            </p>
+
+            <ul class="mt-6 space-y-2 text-gray-300">
+                <li>✨ **High Reflectivity** – Maximum visibility in low light.</li>
+                <li>🤸 **Four-Way Stretch** – Freedom of movement during exercise.</li>
+                <li>🌬️ **Breathable & Lightweight** – Keeps you comfortable, not clammy.</li>
+                <li>🌧️ **Water Resistant** – Protection from light rain.</li>
+            </ul>
+            
+            <div class="mt-8 mb-4">
+                <label for="size" class="block text-lg font-semibold mb-3 text-white">Select Size:</label>
+                <div class="flex space-x-3">
+                    <button class="size-btn p-3 border border-gray-600 rounded-lg w-14 hover:bg-gray-700 transition duration-200" data-size="S">S</button>
+                    <button class="size-btn p-3 border border-gray-600 rounded-lg w-14 hover:bg-gray-700 transition duration-200" data-size="M">M</button>
+                    <button class="size-btn p-3 border border-gray-600 rounded-lg w-14 hover:bg-gray-700 transition duration-200" data-size="L">L</button>
+                    <button class="size-btn p-3 border border-gray-600 rounded-lg w-14 hover:bg-gray-700 transition duration-200" data-size="XL">XL</button>
+                </div>
+            </div>
+
+            <p class="text-4xl font-extrabold text-pink-400 mt-6">₹999</p>
+
+            <button
+                id="add-to-cart-btn"
+                class="mt-6 px-6 py-3 bg-pink-500 rounded-lg text-white text-lg font-extrabold hover:bg-pink-600 transition">
+                Add to Cart
+            </button>
+
+            <a href="cart.html"
+               class="mt-4 inline-block px-6 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition">
+                Go to Cart
+            </a>
+
+            <a href="shop.html"
+               class="mt-4 ml-2 inline-block px-6 py-3 bg-gray-800 border border-pink-400 text-pink-300 font-bold rounded-lg hover:bg-gray-700 transition">
+                ← Return to Shopping
+            </a>
+        </div>
+    </main>
+
+    <section class="max-w-5xl mx-auto mt-16 mb-20 p-6 bg-gray-900/40 rounded-xl shadow-xl">
+        <h2 class="text-3xl font-extrabold text-pink-400 mb-4">Details</h2>
+
+        <div class="space-y-3 text-gray-300">
+            <p><strong>Material:</strong> 90% Polyester, 10% Spandex</p>
+            <p><strong>Care:</strong> Machine wash cold, hang dry recommended</p>
+            <p><strong>Closure:</strong> Full front zipper</p>
+        </div>
+    </section>
+
+</body>
+</html>

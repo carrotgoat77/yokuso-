@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fusion Smartwatch - Product Page</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #1A0B2C;
+            font-family: 'Inter', sans-serif;
+        }
+        :root {
+            --neon-pink: #FF3864;
+        }
+    </style>
+
+    <script>
+        // -------- CART SYSTEM (Copied from reference) --------
+        function addToLocalCart(name, price, imageUrl) {
+            let cart = JSON.parse(localStorage.getItem("Honoured Cart")) || [];
+
+            let existing = cart.find(item => item.name === name);
+
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({
+                    name: name,
+                    price: price,
+                    imageUrl: imageUrl,
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem("Honoured Cart", JSON.stringify(cart));
+            // Custom modal should be used here, but keeping alert() to match the original script
+            alert("✔ Added to Cart!"); 
+        }
+    </script>
+
+</head>
+
+<body class="text-white">
+
+    <!-- HEADER (Copied from reference) -->
+    <header class="p-4 bg-gray-900/50 sticky top-0 border-b border-pink-400/30">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="shop.html" class="text-3xl font-extrabold text-white hover:text-pink-400 transition">Honoured One</a>
+
+            <a href="cart.html" class="relative">
+                <i class="fas fa-shopping-cart text-2xl"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- PRODUCT SECTION -->
+    <main class="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-10 mt-10">
+
+        <!-- IMAGE -->
+        <div>
+            <!-- Placeholder Image URL for the Smartwatch (using the required standard placeholder format) -->
+            <img src="https://placehold.co/600x600/FF3864/ffffff?text=Fusion+Smartwatch" 
+                 alt="Fusion Smartwatch with orange and white strap" 
+                 onerror="this.onerror=null;this.src='https://placehold.co/600x600/1A0B2C/ffffff?text=Image+Not+Found';"
+                 class="rounded-xl shadow-xl w-full object-cover aspect-square" />
+        </div>
+
+        <!-- DETAILS -->
+        <div>
+            <p class="text-pink-400 uppercase text-sm font-bold">Category: Smart Wearable</p>
+
+            <h1 class="text-5xl font-extrabold mt-2">Fusion Smartwatch</h1>
+
+            <p class="text-gray-300 mt-4 leading-relaxed">
+                The **Fusion Smartwatch** combines style with advanced health tracking. Featuring an **HD display**, 
+                continuous SpO2 and heart rate monitoring, and a remarkably long **10-day battery life**, 
+                it's designed to keep up with your active lifestyle and monitor your wellness 24/7.
+            </p>
+
+            <ul class="mt-6 space-y-2 text-gray-300">
+                <li>💖 **SpO2 & HR Monitoring** – Advanced health tracking</li>
+                <li>🔋 **10-Day Battery Life** – Uninterrupted performance</li>
+                <li>💦 **IP68 Water Resistance** – Ready for swims and workouts</li>
+                <li>📱 **HD Touch Screen** – Bright, clear, and responsive display</li>
+                <li>🏃 **Multi-Sport Modes** – Track all your activities</li>
+            </ul>
+
+            <!-- Updated Price -->
+            <p class="text-4xl font-extrabold text-pink-400 mt-6">₹1,999</p>
+
+            <!-- ADD TO CART BUTTON -->
+            <button
+                class="mt-6 px-6 py-3 bg-pink-500 rounded-lg text-white text-lg font-extrabold hover:bg-pink-600 transition"
+                onclick="addToLocalCart('Fusion Smartwatch', 1999, 'https://placehold.co/600x600/FF3864/ffffff?text=Fusion+Smartwatch')">
+                Add to Cart
+            </button>
+
+            <a href="cart.html"
+                class="mt-4 inline-block px-6 py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition">
+                Go to Cart
+            </a>
+
+            <a href="shop.html"
+                class="mt-4 ml-2 inline-block px-6 py-3 bg-gray-800 border border-pink-400 text-pink-300 font-bold rounded-lg hover:bg-gray-700 transition">
+                ← Return to Shopping
+            </a>
+        </div>
+    </main>
+
+    <!-- REVIEWS SECTION -->
+    <section class="max-w-5xl mx-auto mt-16 mb-20 p-6 bg-gray-900/40 rounded-xl shadow-xl">
+        <h2 class="text-3xl font-extrabold text-pink-400 mb-4">Customer Reviews</h2>
+
+        <div class="space-y-6">
+
+            <div class="bg-gray-800/50 p-4 rounded-lg">
+                <p class="font-bold text-white">⭐ 5 / 5 — Longest Battery Life!</p>
+                <p class="text-gray-300 mt-1">
+                    Love the long battery life! I only charge it once a week. The display is super sharp and works well outdoors.
+                </p>
+                <p class="text-gray-500 text-sm mt-1">— Riya, Noida</p>
+            </div>
+
+            <div class="bg-gray-800/50 p-4 rounded-lg">
+                <p class="font-bold text-white">⭐ 4.8 / 5 — Excellent Health Tracking</p>
+                <p class="text-gray-300 mt-1">
+                    The SpO2 sensor seems accurate, and it's comfortable to wear all day, even at night. Great motivator for workouts.
+                </p>
+                <p class="text-gray-500 text-sm mt-1">— Arjun, Goa</p>
+            </div>
+
+            <div class="bg-gray-800/50 p-4 rounded-lg">
+                <p class="font-bold text-white">⭐ 4.6 / 5 — Stylish and Functional</p>
+                <p class="text-gray-300 mt-1">
+                    Looks really stylish, and I appreciate the notifications integration. An absolute steal for the price point.
+                </p>
+                <p class="text-gray-500 text-sm mt-1">— Kiran, Kolkata</p>
+            </div>
+
+        </div>
+    </section>
+    
+    <!-- FONT AWESOME (Keeping this for completeness, though already linked in the head) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+</body>
+</html>
