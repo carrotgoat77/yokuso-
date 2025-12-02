@@ -3,172 +3,540 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact | CyberShop</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Checkout - Honoured One</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary-dark': '#111827', // A deep charcoal color
-                        'neon-pink': '#EC4899',   // A vibrant neon pink
-                        'neon-glow': '#F472B6',   // Lighter pink for glow/accents
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    keyframes: {
-                        pulseNeon: {
-                            '0%, 100%': { 'box-shadow': '0 0 5px #EC4899, 0 0 10px #EC4899' },
-                            '50%': { 'box-shadow': '0 0 10px #F472B6, 0 0 20px #F472B6' },
-                        }
-                    },
-                    animation: {
-                        'neon-pulse': 'pulseNeon 3s infinite ease-in-out',
-                    }
-                }
+        // Load cart items from localStorage, or initialize an empty array
+        let cartItems = JSON.parse(localStorage.getItem('Honoured Cart')) || [];
+
+        // Shipping Costs
+        const SHIPPING_RATES = {
+            Standard: 10.00,
+            Express: 35.00
+        };
+
+        // --- Core Checkout Logic ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderOrderSummary();
+            setupShippingListeners();
+        });
+
+        function setupShippingListeners() {
+            document.querySelectorAll('input[name="Shipping Method"]').forEach(radio => {
+                radio.addEventListener('change', renderOrderSummary);
+            });
+        }
+
+        function getSelectedShippingCost() {
+            const selectedMethod = document.querySelector('input[name="Shipping Method"]:checked')?.value;
+            return SHIPPING_RATES[selectedMethod] || SHIPPING_RATES['Standard']; // Default to Standard
+        }
+
+        function calculateCartTotal() {
+            return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+        }
+
+        function formatCurrency(amount) {
+            // Use Intl.NumberFormat to handle currency formatting and separate thousands without issues
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                minimumFractionDigits: 2 // Keep it consistent for pricing
+            }).format(amount).replace('INR', '₹'); 
+        }
+
+        function renderOrderSummary() {
+            const itemsContainer = document.getElementById('summary-items-container');
+            const subtotalElement = document.getElementById('subtotal-value');
+            const shippingCostElement = document.getElementById('shipping-cost-value');
+            const totalElement = document.getElementById('total-amount');
+            const payButton = document.querySelector('.pay-button');
+            const shippingDescription = document.getElementById('shipping-description');
+
+            // 1. Calculate base values
+            const subtotal = calculateCartTotal();
+            const shippingCost = getSelectedShippingCost();
+            const total = subtotal + shippingCost;
+            const selectedShippingMethod = document.querySelector('input[name="Shipping Method"]:checked')?.value || 'Standard';
+
+            // 2. Render item list
+            itemsContainer.innerHTML = ''; // Clear existing content
+            if (cartItems.length === 0) {
+                itemsContainer.innerHTML = '<div style="text-align: center; color: var(--error-color); padding: 10px 0;">Your cart is empty. Please <a href="shop.html" style="color: var(--accent-color); text-decoration: underline;">return to the shop</a>.</div>';
+                payButton.disabled = true;
+            } else {
+                cartItems.forEach(item => {
+                    const itemPrice = item.price * item.quantity;
+                    const itemHTML = `
+                        <div class="summary-item">
+                            <span>${item.name} (x${item.quantity})</span>
+                            <span>${formatCurrency(itemPrice)}</span>
+                        </div>
+                    `;
+                    itemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+                });
+                payButton.disabled = false;
             }
+
+            // 3. Render totals
+            subtotalElement.textContent = formatCurrency(subtotal);
+            shippingCostElement.textContent = formatCurrency(shippingCost);
+            shippingDescription.textContent = `Shipping (${selectedShippingMethod})`;
+            totalElement.textContent = formatCurrency(total);
+            
+            // 4. Update Pay Button text
+            payButton.innerHTML = `<i class="fas fa-lock"></i> Place Order & Pay ${formatCurrency(total)}`;
         }
     </script>
     <style>
+        /* CSS Variables for a Dark Theme */
+        :root {
+            --primary-bg: #1A0B2C; /* Deep Purple-Black (Matching shop.html) */
+            --secondary-bg: #2C2C45; /* Slightly Lighter Dark Card Background */
+            --accent-color: #FF3864; /* Vibrant Neon Pink (Matching shop.html) */
+            --text-color: #FFFFFF;
+            --light-text: #B0B0D0;
+            --border-color: #444466;
+            --success-color: #4CAF50;
+            --error-color: #F44336;
+        }
+
+        /* Base Styles */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #111827;
-            color: #E5E7EB;
-            /* Using a placeholder background image for visual appeal */
-            background-image: url('https://in.pinterest.com/pin/323485185757231779/'); 
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Added to stack elements vertically */
+            justify-content: flex-start; 
+            align-items: flex-start; /* <<< CHANGE 1: Aligns all direct children (header, container) to the left */
+            min-height: 100vh;
+            padding: 0; 
+        }
+        
+        /* New Header Style */
+        .page-header {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 15px 0;
+            border-bottom: 1px solid var(--accent-color);
+            margin-bottom: 40px;
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 20px; /* <<< CHANGE 2: Removed auto and added 20px margin to the left and right */
+            padding: 0; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-content a {
+            color: var(--light-text);
+            text-decoration: none;
+            transition: color 0.2s;
+            font-weight: 600;
+        }
+        .header-content a:hover {
+            color: var(--accent-color);
         }
 
-        /* Semi-transparent overlay for readability */
-        .main-container {
-            background-color: rgba(17, 24, 39, 0.95); 
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        /* Layout Container */
+        .checkout-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 40px 20px; 
+            margin: 0 20px; /* <<< CHANGE 3: Removed auto and added 20px margin to the left and right */
+        }
+        /* Form Section - Takes up more space */
+        .checkout-form-section {
+            flex: 2; /* Takes 2/3 of the space */
+            min-width: 300px;
         }
 
-        .neon-input {
-            background-color: #1F2937;
-            border: 1px solid rgba(236, 72, 153, 0.5);
-            color: white;
-            transition: all 0.3s ease;
+        /* Summary Section - Takes up less space */
+        .order-summary-card {
+            flex: 1; /* Takes 1/3 of the space */
+            min-width: 300px;
+            background-color: var(--secondary-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            height: fit-content; /* Adjust height based on content */
+            position: sticky; /* Keep summary visible while scrolling form */
+            top: 40px;
         }
-        .neon-input:focus {
-            border-color: #F472B6;
+
+        /* Headings */
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--light-text);
+            font-size: 0.9rem;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-color);
             outline: none;
-            box-shadow: 0 0 8px rgba(244, 114, 182, 0.6);
+            box-shadow: 0 0 0 3px rgba(255, 56, 100, 0.5); /* Updated color to match accent */
+        }
+        
+        /* Layout for rows with multiple inputs */
+        .row-group {
+            display: flex;
+            gap: 20px;
+        }
+        .row-group .form-group {
+            flex: 1;
+        }
+        /* Fix for select arrow on dark themes */
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M287%2069.9L146.2%20209.7%205.4%2069.9z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 10px auto;
+        }
+
+        /* Shipping Methods - Radio Buttons */
+        .shipping-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .shipping-option {
+            background-color: var(--secondary-bg);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .shipping-option:hover {
+            border-color: var(--accent-color);
+        }
+        /* Highlight selected option */
+        .shipping-option input[type="radio"]:checked + .details + .cost {
+            color: var(--success-color);
+        }
+
+        .shipping-option input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+            accent-color: var(--accent-color); /* Highlight color for radio button */
+        }
+        
+        .shipping-option .details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .shipping-option .cost {
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+        
+        /* Order Summary Styling */
+        .summary-item, .summary-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 1rem;
+        }
+        
+        /* Removed fixed placeholder styles from cart items */
+        #summary-items-container .summary-item {
+             border-bottom: 1px dashed var(--border-color);
+             color: var(--light-text);
+        }
+        
+        #summary-items-container .summary-item:last-of-type {
+            border-bottom: none;
+        }
+
+
+        .summary-item {
+            color: var(--light-text);
+        }
+
+        .summary-total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-color);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .summary-total .total-amount {
+            color: var(--accent-color);
+        }
+
+        /* Final Action Button */
+        .pay-button {
+            width: 100%;
+            padding: 18px;
+            margin-top: 30px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        .pay-button:hover:not(:disabled) {
+            background-color: #E01E50; /* Slightly darker pink */
+        }
+        
+        .pay-button:active:not(:disabled) {
+            transform: translateY(2px);
+        }
+        
+        .pay-button:disabled {
+             background-color: #555;
+             cursor: not-allowed;
+             opacity: 0.6;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 900px) {
+            .checkout-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .order-summary-card {
+                position: relative; /* Remove sticky on mobile */
+                top: 0;
+            }
+
+            .row-group {
+                flex-direction: column;
+                gap: 0;
+            }
         }
     </style>
 </head>
-<body class="min-h-screen">
-
-    <header class="bg-gray-900/90 shadow-xl sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0">
-                
-                <div class="flex items-center space-x-8">
-                    <h1 class="text-3xl font-extrabold text-neon-pink tracking-wider">CyberShop</h1>
-                    <nav class="hidden md:flex space-x-6 text-sm font-medium">
-                        <a href="index.html" class="text-gray-300 hover:text-neon-glow transition duration-150">Home</a>
-                        <a href="shop.html" class="text-gray-300 hover:text-neon-glow transition duration-150">Products</a>
-                        <a href="contact.html" class="text-neon-pink border-b-2 border-neon-pink pb-1">Contact</a>
-                    </nav>
-                </div>
-
-                <div class="w-full lg:w-96 flex items-center space-x-4">
-                    <div class="relative w-full">
-                        <input type="search" placeholder="Search high-tech gadgets..."
-                            class="w-full py-2 pl-10 pr-4 rounded-full bg-gray-800 text-white placeholder-gray-500 focus:ring-2 focus:ring-neon-pink focus:outline-none transition duration-150 border border-gray-700">
-                        <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neon-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </div>
-                    <button class="p-2 rounded-full bg-neon-pink hover:bg-neon-glow transition duration-150 text-gray-900 relative">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                    </button>
-                </div>
-            </div>
+<body>
+    
+    <header class="page-header">
+        <div class="header-content">
+            <a href="shop.html">
+                <i class="fas fa-home"></i> Back to Shop
+            </a>
             
-            <nav class="mt-4 md:hidden flex justify-around text-sm font-medium border-t border-gray-700 pt-3">
-                <a href="index.html" class="text-gray-300 hover:text-neon-glow transition duration-150">Home</a>
-                <a href="shop.html" class="text-gray-300 hover:text-neon-glow transition duration-150">Products</a>
-                <a href="contact.html" class="text-neon-pink border-b-2 border-neon-pink pb-1">Contact</a>
-            </nav>
+            <a href="cart.html">
+                <i class="fas fa-shopping-cart"></i> Return to Cart
+            </a>
         </div>
     </header>
 
+    <div class="checkout-container">
+        
+        <div class="checkout-form-section">
+            <h1>Honoured One Checkout</h1>
 
-    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="main-container p-6 md:p-10 rounded-2xl shadow-2xl">
-            <header class="text-center mb-10">
-                <h2 class="text-5xl font-extrabold text-neon-pink mb-3 tracking-wide">
-                    Connect to us
-                </h2>
-                <p class="text-xl text-gray-400">
-                    Need tech support, partnership inquiries, or just want to chat about the future? Send a direct data packet.
-                </p>
-            </header> 
+            <form action="https://formspree.io/f/mqawaway" method="POST">
 
-            <form action="https://api.web3forms.com/submit" method="POST" class="space-y-6">
+                <h2>1. Shipping Address</h2>
+                <div class="form-group">
+                    <label for="email">Contact Email</label>
+                    <input type="email" id="email" name="Email" required placeholder="name@example.com">
+                </div>
                 
-                <input type="hidden" name="access_key" value="32eebedb-afc8-43dc-afcb-9e061cb8ec1d">
-
-                <div>
-                    <label for="name" class="block text-sm font-medium text-neon-glow mb-1">Full Cyber-Name</label>
-                    <input type="text" name="name" id="name" required
-                        class="neon-input w-full px-4 py-3 rounded-lg placeholder-gray-500">
+                <div class="row-group">
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" id="first_name" name="First Name" required placeholder="John">
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" id="last_name" name="Last Name" required placeholder="Doe">
+                    </div>
                 </div>
 
-                <div>
-                    <label for="email" class="block text-sm font-medium text-neon-glow mb-1">Data Stream Address (Email)</label>
-                    <input type="email" name="email" id="email" required
-                        class="neon-input w-full px-4 py-3 rounded-lg placeholder-gray-500">
+                <div class="form-group">
+                    <label for="address">Street Address</label>
+                    <input type="text" id="address" name="Street Address" required placeholder="123 Planet Dr">
                 </div>
 
-                <div>
-                    <label for="subject" class="block text-sm font-medium text-neon-glow mb-1">Data Packet Subject</label>
-                    <input type="text" name="subject" id="subject"
-                        class="neon-input w-full px-4 py-3 rounded-lg placeholder-gray-500">
+                <div class="row-group">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="City" required placeholder="Neo-Cyberburg">
+                    </div>
+                    <div class="form-group">
+                        <label for="zip">Zip/Postal Code</label>
+                        <input type="text" id="zip" name="Zip Code" required placeholder="90210">
+                    </div>
                 </div>
 
-                <div>
-                    <label for="message" class="block text-sm font-medium text-neon-glow mb-1">Message Protocol</label>
-                    <textarea name="message" id="message" rows="5" required
-                        class="neon-input w-full px-4 py-3 rounded-lg placeholder-gray-500"></textarea>
+                <div class="form-group">
+                    <label for="country">Country/Region</label>
+                    <select id="country" name="Country" required>
+                        <option value="" disabled selected>Select a country...</option>
+                        <option value="USA">United States</option>
+                        <option value="CAN">Canada</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="AUS">Australia</option>
+                        <option value="DEU">Germany</option>
+                        <option value="FRA">France</option>
+                        <option value="JPN">Japan</option>
+                        <option value="IND">India</option>
+                        <option value="BRA">Brazil</option>
+                        <option value="MEX">Mexico</option>
+                        <option value="KOR">South Korea</option>
+                        <option value="ITA">Italy</option>
+                        <option value="ESP">Spain</option>
+                        <option value="CHN">China</option>
+                        <option value="ZAF">South Africa</option>
+                        <option value="RUS">Russia</option>
+                        <option value="NLD">Netherlands</option>
+                        <option value="SGP">Singapore</option>
+                        <option value="ARE">United Arab Emirates</option>
+                    </select>
                 </div>
 
-                <button type="submit"
-                    class="w-full px-6 py-3 mt-6 bg-neon-pink text-gray-900 font-bold text-lg rounded-lg hover:bg-neon-glow transition duration-300 shadow-lg hover:shadow-neon-glow/50 border border-transparent hover:border-white">
-                    Send Data Packet
+                <h2>2. Shipping Method</h2>
+                <div class="shipping-options">
+                    <label class="shipping-option">
+                        <input type="radio" name="Shipping Method" value="Standard" checked>
+                        <div class="details">
+                            <span style="font-weight: bold;">Standard Delivery</span>
+                            <span style="color: var(--light-text); font-size: 0.85rem;">(5-7 Business Days)</span>
+                        </div>
+                        <span class="cost">₹10.00</span>
+                    </label>
+                    <label class="shipping-option">
+                        <input type="radio" name="Shipping Method" value="Express">
+                        <div class="details">
+                            <span style="font-weight: bold;">Express Priority</span>
+                            <span style="color: var(--light-text); font-size: 0.85rem;">(1-2 Business Days)</span>
+                        </div>
+                        <span class="cost">₹35.00</span>
+                    </label>
+                </div>
+
+
+                <h2>3. Payment Details</h2>
+                
+                <div class="form-group">
+                    <label for="card_name">Name on Card</label>
+                    <input type="text" id="card_name" name="Card Name" required placeholder="John D. Doe">
+                </div>
+
+                <div class="form-group">
+                    <label for="card_number">Card Number</label>
+                    <input type="text" id="card_number" name="Card Number" required placeholder="XXXX XXXX XXXX XXXX" inputmode="numeric" pattern="[0-9]{13,16}">
+                </div>
+
+                <div class="row-group">
+                    <div class="form-group">
+                        <label for="expiry">Expiry Date</label>
+                        <input type="text" id="expiry" name="Card Expiry" required placeholder="MM/YY" pattern="(0[1-9]|1[0-2])\/?([0-9]{2})">
+                    </div>
+                    <div class="form-group">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="Card CVV" required placeholder="123" inputmode="numeric" pattern="[0-9]{3,4}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="promo">Discount/Gift Card Code (Optional)</label>
+                    <input type="text" id="promo" name="Promo Code" placeholder="ENTERCODE">
+                </div>
+                
+                <button type="submit" class="pay-button">
+                    <i class="fas fa-lock"></i> Place Order & Pay 
                 </button>
-
-                <p class="text-xs text-center text-gray-500 pt-4">This form is powered by Web3Forms and the CyberShop network.</p>
             </form>
+        </div>
+
+        <div class="order-summary-card">
+            <h2>Order Summary</h2>
             
-            <div class="mt-10 border-t border-gray-700 pt-8 text-center space-y-4">
-                <p class="text-lg font-semibold text-white">Central Operations Node:</p>
-                <p class="text-gray-400">
-                    <span class="text-neon-pink">Address:</span> A6 RADHEY SHYAM PARK,DELHI-110051<br>
-                    <span class="text-neon-pink">Phone:</span> +919667628807
-                </p>
-                <div class="flex justify-center space-x-6 pt-4">
-                    <a href="https://www.instagram.com/frixz_77" target="_blank" class="text-neon-pink hover:text-neon-glow transition duration-300">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07c3.275.148 4.673 1.637 4.82 4.85.058 1.265.07 1.645.07 4.85s-.012 3.584-.07 4.85c-.148 3.276-1.637 4.673-4.85 4.82-1.265.058-1.645.07-4.85.07s-3.584-.012-4.85-.07c-3.276-.148-4.673-1.637-4.82-4.85-.058-1.265-.07-1.645-.07-4.85s.012-3.584.07-4.85c.148-3.275 1.637-4.673 4.85-4.82 1.265-.058 1.645-.07 4.85-.07zm0-2.163c-3.259 0-3.66.014-4.945.071C3.39 0.291 1.766 1.916 1.547 4.697c-.058 1.285-.07 1.686-.07 4.945s.012 3.66.07 4.945c.219 2.781 1.844 4.406 4.598 4.625 1.285.058 1.686.07 4.945.07s3.66-.014 4.945-.071c2.754-.219 4.378-1.844 4.598-4.625.058-1.285.07-1.686.07-4.945s-.014-3.66-.071-4.945c-.219-2.781-1.844-4.406-4.625-4.598-1.285-.058-1.686-.07-4.945-.07zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm6.5-.5a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5z"/></svg>
-                    </a>
-                    <a href="https://www.instagram.com/frixz23" target="_blank" class="text-neon-pink hover:text-neon-glow transition duration-300">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07c3.275.148 4.673 1.637 4.82 4.85.058 1.265.07 1.645.07 4.85s-.012 3.584-.07 4.85c-.148 3.276-1.637 4.673-4.85 4.82-1.265.058-1.645.07-4.85.07s-3.584-.012-4.85-.07c-3.276-.148-4.673-1.637-4.82-4.85-.058-1.265-.07-1.645-.07-4.85s.012-3.584.07-4.85c.148-3.275 1.637-4.673 4.85-4.82 1.265-.058 1.645-.07 4.85-.07zm0-2.163c-3.259 0-3.66.014-4.945.071C3.39 0.291 1.766 1.916 1.547 4.697c-.058 1.285-.07 1.686-.07 4.945s.012 3.66.07 4.945c.219 2.781 1.844 4.406 4.598 4.625 1.285.058 1.686.07 4.945.07s3.66-.014 4.945-.071c2.754-.219 4.378-1.844 4.598-4.625.058-1.285.07-1.686.07-4.945s-.014-3.66-.071-4.945c-.219-2.781-1.844-4.406-4.625-4.598-1.285-.058-1.686-.07-4.945-.07zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm6.5-.5a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5z"/></svg>
-                    </a>
+            <div id="summary-items-container" class="summary-details">
+                </div>
+
+            <div class="summary-details" style="margin-top: 15px;">
+                <div class="summary-item">
+                    <span>Subtotal</span>
+                    <span id="subtotal-value">₹0.00</span>
+                </div>
+                <div class="summary-item">
+                    <span id="shipping-description">Shipping (Standard)</span>
+                    <span id="shipping-cost-value">₹10.00</span>
+                </div>
+                <div class="summary-item">
+                    <span>Tax (0%)</span>
+                    <span>₹0</span>
                 </div>
             </div>
-
+            
+            <div class="summary-total">
+                <span>Order Total:</span>
+                <span class="total-amount" id="total-amount">₹0.00</span>
+            </div>
+            
+            <p style="color: var(--light-text); font-size: 0.85rem; margin-top: 30px; text-align: center;">
+                By placing this order, you agree to our Terms and Conditions.
+            </p>
         </div>
-    </main>
 
-    <footer class="bg-gray-900/90 mt-12 py-6 border-t border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
-            &copy; 2024 CyberShop. All rights reserved. | <span class="text-neon-pink">Connect and Compute</span>
-        </div>
-    </footer>
+    </div>
 
 </body>
 </html>
