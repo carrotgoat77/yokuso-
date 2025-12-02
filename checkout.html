@@ -110,10 +110,11 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-direction: column; /* Added to stack elements vertically */
+            justify-content: flex-start; 
+            align-items: flex-start; /* <<< CHANGE 1: Aligns all direct children (header, container) to the left */
             min-height: 100vh;
-            padding: 0; /* Changed padding to 0 here and added to main/container */
+            padding: 0; 
         }
         
         /* New Header Style */
@@ -126,8 +127,8 @@
         }
         .header-content {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+            margin: 0 20px; /* <<< CHANGE 2: Removed auto and added 20px margin to the left and right */
+            padding: 0; 
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -149,9 +150,9 @@
             gap: 40px;
             width: 100%;
             max-width: 1200px;
-            padding: 40px 20px; /* Added main padding here */
+            padding: 40px 20px; 
+            margin: 0 20px; /* <<< CHANGE 3: Removed auto and added 20px margin to the left and right */
         }
-        /* ... (rest of your existing CSS styles) ... */
         /* Form Section - Takes up more space */
         .checkout-form-section {
             flex: 2; /* Takes 2/3 of the space */
